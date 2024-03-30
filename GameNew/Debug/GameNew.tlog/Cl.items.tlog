@@ -1,1 +1,6 @@
-F:\GameNew\01_hello_SDL.cpp;F:\GameNew\GameNew\Debug\01_hello_SDL.obj
+F:\GameNew\Background.cpp;F:\GameNew\GameNew\Debug\Background.obj
+F:\GameNew\CommonFunction.cpp;F:\GameNew\GameNew\Debug\CommonFunction.obj
+F:\GameNew\GameLoop.cpp;F:\GameNew\GameNew\Debug\GameLoop.obj
+F:\GameNew\main.cpp;F:\GameNew\GameNew\Debug\main.obj
+F:\GameNew\Player.cpp;F:\GameNew\GameNew\Debug\Player.obj
+F:\GameNew\TextureManager.cpp;F:\GameNew\GameNew\Debug\TextureManager.obj

@@ -11,7 +11,7 @@ GameLoop::GameLoop()
 }
 GameLoop:: ~GameLoop()
 {
-
+	Free();
 }
 bool GameLoop::LoadImage(std::string path, SDL_Renderer* screen)
 {
@@ -20,7 +20,7 @@ bool GameLoop::LoadImage(std::string path, SDL_Renderer* screen)
 	if (load_surface != NULL)
 	{
 		// xoa back nhan vat
-		SDL_SetColorKey(load_surface, SDL_TRUE, SDL_MapRGB(load_surface->format, COLOR_KEY_R, COLOR_KEY_B, COLOR_KEY_G));
+		SDL_SetColorKey(load_surface, SDL_TRUE, SDL_MapRGB(load_surface->format, COLOR_KEY_R, COLOR_KEY_G, COLOR_KEY_B));
 		new_tex = SDL_CreateTextureFromSurface(screen, load_surface);
 		if (new_tex != NULL) 
 		{
@@ -34,9 +34,9 @@ bool GameLoop::LoadImage(std::string path, SDL_Renderer* screen)
 	return p_object_ = NULL;
 }
 
-void GameLoop::Render(SDL_Renderer* des, const SDL_Rect* clip)
+void GameLoop::Render(SDL_Renderer* des, const SDL_Rect* clip /* = NULL */)
 {
-	SDL_Rect renderquad = { rect_.x, rect_.y, rect_.h, rect_.w };
+	SDL_Rect renderquad = { rect_.x, rect_.y, rect_.w, rect_.h };
 	SDL_RenderCopy(des, p_object_, clip, &renderquad);
 }
 

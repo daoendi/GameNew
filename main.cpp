@@ -12,7 +12,7 @@ bool InitData()
 	}
 
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
-	g_window = SDL_CreateShapedWindow("Dino", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+	g_window = SDL_CreateWindow("Dino", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 		if (g_window == NULL)
 		{
 			success = false;
@@ -62,20 +62,22 @@ int main(int argc, char* argv[])
 
 	if (LoadBackground() == false) { return -1; }
 	bool is_quit = false;
-	while (SDL_PollEvent(&g_event) != 0)
-	{
-		if (g_event.type == SDL_QUIT)
+	while (!is_quit) {
+		while (SDL_PollEvent(&g_event) != 0)
 		{
-			is_quit = true;
+			if (g_event.type == SDL_QUIT)
+			{
+				is_quit = true;
+			}
+
+			SDL_SetRenderDrawColor(g_screen, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR);
+			SDL_RenderClear(g_screen);
+
+			g_background.Render(g_screen, NULL);
+
+			SDL_RenderPresent(g_screen);
+
 		}
-
-		SDL_SetRenderDrawColor(g_screen, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR);
-		SDL_RenderClear(g_screen);
-
-		g_background.Render(g_screen, NULL);
-
-		SDL_RenderPresent(g_screen);
-
 	}
 	Close();
 	return 0;

@@ -4,11 +4,23 @@
 class Player :public Object
 {
 private:
-    int gravity = 1;
-    //SDL_Rect screen = getSrc();
-    //SDL_Rect destination = getDest();
+    double gravity = 0.2;
+    int Ypos = 256;
+    double accelerator1 = 0;
+    double accelerator2 = 0;
+    bool inJump = false;
+    double jumpHeight = -6;
+    double jumpTimer;
+    double lastJump = 0;
+    SDL_Texture* Tex1;
+    SDL_Texture* Tex2;
+    int animationTimer;
 public:
-    void Update();
+    void Gravity();
+    void GetJumpTime();
+    void Jump();
+    bool JumpState();
+    void CreateTexture1(const char* address, SDL_Renderer* ren);
+    void CreateTexture2(const char* address, SDL_Renderer* ren);
     void Render(SDL_Renderer* ren);
 };
-

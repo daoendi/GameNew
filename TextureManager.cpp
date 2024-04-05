@@ -1,6 +1,6 @@
 #include "TextureManager.h"
 
-SDL_Texture* TextureManager::Texture(const char* filelocation,SDL_Renderer* ren)
+SDL_Texture* TextureManager::Texture(const char* filelocation, SDL_Renderer* ren)
 {
 	SDL_Surface* surface;
 	surface = IMG_Load(filelocation);

@@ -32,7 +32,7 @@ void Object::setDest(int x, int y, int h, int w)
 	dest.w = w;
 }
 
-void Object::CreateTexture(const char* address,SDL_Renderer* ren)
+void Object::CreateTexture(const char* address, SDL_Renderer* ren)
 {
 	Tex = TextureManager::Texture(address, ren);
 }

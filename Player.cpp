@@ -37,7 +37,7 @@ void Player::Gravity()
 		if (jumpHeight > 0)
 		{
 			inJump = false;
-			jumpHeight = -10;
+			jumpHeight = -12;
 		}
 		
 	}
@@ -60,7 +60,7 @@ void Player::Gravity()
 void Player::Jump()
 {
 
-		if (jumpTimer - lastJump > 800)
+		if (jumpTimer - lastJump > 900)
 		{
 			accelerator1 = 0;
 			accelerator2 = 0;

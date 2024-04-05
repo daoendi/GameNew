@@ -6,11 +6,11 @@ class Player :public Object
 private:
     double ground = 358;
     double gravity = 0.2;
-    int Ypos = 358;
+    double Ypos = 358;
     double accelerator1 = 0;
     double accelerator2 = 0;
     bool inJump = false;
-    double jumpHeight = -10;
+    double jumpHeight = -12;
     double jumpTimer;
     double lastJump = 0;
     SDL_Texture* Tex1;

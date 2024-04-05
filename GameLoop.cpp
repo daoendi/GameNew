@@ -32,7 +32,12 @@ void GameLoop::Intialize()
 			p.CreateTexture("Image/dino1.png", renderer);
 			p.CreateTexture1("Image/dino2.png", renderer);
 			p.CreateTexture2("Image/dino3.png", renderer);
-			b.CreateTexture("Image/background-day.png", renderer);
+			b.CreateTexture("Image/background2.png", renderer);
+			b1.CreateTexture("Image/texture1.png", renderer);
+			b3.CreateTexture("Image/texture3.png", renderer);
+			mod1.CreateTexture("Image/enemy1.png", renderer);
+			mod2.CreateTexture("Image/enemy2.png", renderer);
+			mod3.CreateTexture("Image/enemy3.png", renderer);
 			ground1.CreateTexture("Image/base.png", renderer);
 			ground2.CreateTexture("Image/base.png", renderer);
 		}
@@ -79,14 +84,22 @@ void GameLoop::Update()
 {
 	ground1.GroundUpdate1();
 	ground2.GroundUpdate2();
+	mod1.EnemyUpdate1();
+	mod2.EnemyUpdate2();
+	mod3.EnemyUpdate3();
 }
 
 void GameLoop::Render()
 {
 	SDL_RenderClear(renderer);
 	b.Render(renderer);
+	b1.Render(renderer);
+	b3.Render(renderer);
 	ground1.GroundRender(renderer);
 	ground2.GroundRender(renderer);
+	mod1.EnemyRender(renderer);
+	mod2.EnemyRender(renderer);
+	mod3.EnemyRender(renderer);
 	p.Render(renderer);
 	SDL_RenderPresent(renderer);
 }

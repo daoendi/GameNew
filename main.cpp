@@ -18,6 +18,7 @@ int main(int argc, char** argv)
 			SDL_Delay(16.7 - (first - last));
 		}
 		last = first;
+		g->Check();
 	}
 	g->Clear();
 	return 0;

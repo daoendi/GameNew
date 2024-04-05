@@ -15,6 +15,7 @@ private:
 	const int HEIGHT = 520;
 	const int WIDTH = 800;
 	bool GameState;
+	bool GameEnd;
 	SDL_Window* window;
 	SDL_Event event1, event2;
 	SDL_Renderer* renderer;
@@ -26,4 +27,9 @@ public:
 	void Event();
 	void Render();
 	void Clear();
+	void Close();
+	SDL_Rect GetFrameP(Player p);
+	SDL_Rect GetFrameE(Enemy p);
+	void Check();
+	bool CheckCollision(const SDL_Rect& object1, const SDL_Rect& object2);
 };

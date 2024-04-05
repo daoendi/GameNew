@@ -5,12 +5,12 @@ GameLoop::GameLoop()
 	window = NULL;
 	renderer = NULL;
 	GameState = false;
-	p.setSrc(0, 0, 24, 32);
-	p.setDest(25, HEIGHT / 2, 28, 38);
-	ground1.setSrc(0, 0, 112, 336);
-	ground1.setDest(0, 420, 112, 336);
-	ground2.setSrc(0, 0, 112, 336);
-	ground2.setDest(336, 420, 112, 336);
+	p.setSrc(0, 0, 72, 72);
+	p.setDest(25, HEIGHT / 2, 72, 72);
+	ground1.setSrc(0, 0, 112,800);
+	ground1.setDest(0, 420, 112, 800);
+	ground2.setSrc(0, 0, 112, 800);
+	ground2.setDest(336, 420, 112, 800);
 }
 
 bool GameLoop::getGameState()
@@ -30,8 +30,8 @@ void GameLoop::Intialize()
 			std::cout << "Succeeded!" << std::endl;
 			GameState = true;
 			p.CreateTexture("Image/dino1.png", renderer);
-			p.CreateTexture1("Image/dino3.png", renderer);
-			p.CreateTexture2("Image/dino5.png", renderer);
+			p.CreateTexture1("Image/dino2.png", renderer);
+			p.CreateTexture2("Image/dino3.png", renderer);
 			b.CreateTexture("Image/background-day.png", renderer);
 			ground1.CreateTexture("Image/base.png", renderer);
 			ground2.CreateTexture("Image/base.png", renderer);
@@ -57,11 +57,11 @@ void GameLoop::Event()
 	}
 	if (event1.type == SDL_KEYDOWN)
 	{
-		if (event1.key.keysym.sym == SDLK_UP)
+		if (event1.key.keysym.sym == SDLK_SPACE)
 		{
 			if (!p.JumpState())
 			{
-				p.Jump();
+					p.Jump();
 			}
 			else
 			{
@@ -77,16 +77,16 @@ void GameLoop::Event()
 
 void GameLoop::Update()
 {
-	//ground1.GroundUpdate1();
-	//ground2.GroundUpdate2();
+	ground1.GroundUpdate1();
+	ground2.GroundUpdate2();
 }
 
 void GameLoop::Render()
 {
 	SDL_RenderClear(renderer);
 	b.Render(renderer);
-	//ground1.GroundRender(renderer);
-	//ground2.GroundRender(renderer);
+	ground1.GroundRender(renderer);
+	ground2.GroundRender(renderer);
 	p.Render(renderer);
 	SDL_RenderPresent(renderer);
 }

@@ -11,11 +11,11 @@ private:
 	Player p;
 	Background b;
 	Background ground1, ground2;
-	const int HEIGHT = 600;
+	const int HEIGHT = 520;
 	const int WIDTH = 800;
 	bool GameState;
 	SDL_Window* window;
-	SDL_Event event1;
+	SDL_Event event1, event2;
 	SDL_Renderer* renderer;
 public:
 	GameLoop();

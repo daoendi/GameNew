@@ -13,30 +13,30 @@ void Background::GroundRender(SDL_Renderer* ren)
 	SDL_RenderCopy(ren, texb , &scrb, &destb);
 }
 
-void Background::GroundUpdate1()
-{
-	if (distance1 <= -330)
+void Background::GroundUpdate1(){
+
+	if (distance1 <= -800)
 	{
-		distance1 = 336;
+		distance1 = 800;
 	}
 	else
 	{
 		distance1--;
-		setSrc(0, 0, 112, 336);
-		setDest(distance1, 420, 112, 336);
+		setSrc(0, 0, 112, 800);
+		setDest(distance1, 420, 112, 800);
 	}
 }
 
 void Background::GroundUpdate2()
 {
-	if (distance2 <= -330)
+	if (distance2 <= -800)
 	{
-		distance2 = 336;
+		distance2 = 800;
 	}
 	else
 	{
 		distance2--;
-		setSrc(0, 0, 112, 336);
-		setDest(distance2, 420, 112, 336);
+		setSrc(0, 0, 112, 800);
+		setDest(distance2, 420, 112, 800);
 	}
 }

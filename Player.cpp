@@ -44,10 +44,12 @@ void Player::Gravity()
 
 		accelerator1 = accelerator1 + 0.035;
 		accelerator2 = accelerator2 + 0.035;
-		Ypos = Ypos + gravity + accelerator1 + accelerator2;
+		ground = ground + gravity + accelerator1 + accelerator2;
 		setDest(25, Ypos, 28, 38);
 	}
-	
+	if (Ypos <=400) {
+		Ypos = Ypos + gravity + accelerator1 + accelerator2 + jumpHeight;
+	}
 }
 
 void Player::Jump()

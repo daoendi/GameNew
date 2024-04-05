@@ -29,9 +29,9 @@ void GameLoop::Intialize()
 		{
 			std::cout << "Succeeded!" << std::endl;
 			GameState = true;
-			p.CreateTexture("Image/yellowbird1.png", renderer);
-			p.CreateTexture1("Image/yellowbird2.png", renderer);
-			p.CreateTexture2("Image/yellowbird3.png", renderer);
+			p.CreateTexture("Image/dino1.png", renderer);
+			p.CreateTexture1("Image/dino3.png", renderer);
+			p.CreateTexture2("Image/dino5.png", renderer);
 			b.CreateTexture("Image/background-day.png", renderer);
 			ground1.CreateTexture("Image/base.png", renderer);
 			ground2.CreateTexture("Image/base.png", renderer);

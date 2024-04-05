@@ -31,7 +31,7 @@ bool GameLoop::LoadImage(std::string path, SDL_Renderer* screen)
 
 	}
 	p_object_ = new_tex;
-	return p_object_ = NULL;
+	return p_object_ != NULL;
 }
 
 void GameLoop::Render(SDL_Renderer* des, const SDL_Rect* clip /* = NULL */)

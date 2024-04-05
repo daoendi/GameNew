@@ -1,53 +1,75 @@
-#include "GameLoop.h"
+#include"GameLoop.h"
 
-GameLoop::GameLoop() 
+GameLoop::GameLoop()
 {
-	p_object_ = NULL;
-	rect_.x = 0;
-	rect_.y = 0;
-	rect_.w = 0;
-	rect_.h = 0;
+	window = NULL;
+	renderer = NULL;
+	GameState = false;
+	p.setSrc(0, 0, 60, 80);
+	p.setDest(10, 10, 60, 80);
+}
 
-}
-GameLoop:: ~GameLoop()
+bool GameLoop::getGameState()
 {
-	Free();
+	return GameState;
 }
-bool GameLoop::LoadImage(std::string path, SDL_Renderer* screen)
+
+void GameLoop::Intialize()
 {
-	SDL_Texture* new_tex = NULL;
-	SDL_Surface* load_surface = IMG_Load(path.c_str());
-	if (load_surface != NULL)
+	SDL_Init(SDL_INIT_EVERYTHING);
+	window = SDL_CreateWindow("My Game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, SDL_WINDOW_RESIZABLE);
+	if (window)
 	{
-		// xoa back nhan vat
-		SDL_SetColorKey(load_surface, SDL_TRUE, SDL_MapRGB(load_surface->format, COLOR_KEY_R, COLOR_KEY_G, COLOR_KEY_B));
-		new_tex = SDL_CreateTextureFromSurface(screen, load_surface);
-		if (new_tex != NULL) 
+		renderer = SDL_CreateRenderer(window, -1, 0);
+		if (renderer)
 		{
-			rect_.w = load_surface->w;
-			rect_.h = load_surface->h;
+			std::cout << "Succeeded!" << std::endl;
+			GameState = true;
+			p.CreateTexture("Image/6.png", renderer);
+			b.CreateTexture("Image/background.png", renderer);
 		}
-		SDL_FreeSurface(load_surface);
-
+		else
+		{
+			std::cout << "Not created!" << std::endl;
+		}
 	}
-	p_object_ = new_tex;
-	return p_object_ != NULL;
-}
-
-void GameLoop::Render(SDL_Renderer* des, const SDL_Rect* clip /* = NULL */)
-{
-	SDL_Rect renderquad = { rect_.x, rect_.y, rect_.w, rect_.h };
-	SDL_RenderCopy(des, p_object_, clip, &renderquad);
-}
-
-void GameLoop::Free()
-{
-	if (p_object_ != NULL)
+	else
 	{
-		SDL_DestroyTexture(p_object_);
-		p_object_ = NULL;
-		rect_.w = 0;
-		rect_.h = 0;
-			
+		std::cout << "window not created!" << std::endl;
 	}
+}
+
+void GameLoop::Event()
+{
+	SDL_PollEvent(&event1);
+	if (event1.type == SDL_QUIT)
+	{
+		GameState = false;
+	}
+	if (event1.type == SDL_KEYDOWN)
+	{
+		if (event1.key.keysym.sym == SDLK_UP)
+		{
+			std::cout << "pressed!" << std::endl;
+		}
+	}
+}
+
+void GameLoop::Update()
+{
+	p.Update();
+}
+
+void GameLoop::Render()
+{
+	SDL_RenderClear(renderer);
+	b.Render(renderer);
+	p.Render(renderer);
+	SDL_RenderPresent(renderer);
+}
+
+void GameLoop::Clear()
+{
+	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(window);
 }

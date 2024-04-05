@@ -1,84 +1,25 @@
-﻿#include "CommonFunction.h"
-#include "GameLoop.h"
+#include"GameLoop.h"
 
-GameLoop g_background;
-bool InitData()
+GameLoop* g = new GameLoop();
+
+int main(int argc, char** argv)
 {
-	bool success = true;
-	int ret = SDL_Init(SDL_INIT_VIDEO);
-	if (ret < 0)
+	double first;
+	double last = 0;
+	g->Intialize();
+	while (g->getGameState())
 	{
-		return false;
+		g->Event();
+		g->Update();
+		g->Render();
+		first = SDL_GetTicks();
+		if (first - last < 16.7)
+		{
+			SDL_Delay(16.7 - (first - last));
+			std::cout << 1000 / ((16.7 - (first - last)) + (first - last)) << std::endl;
+		}
+		last = first;
 	}
-
-	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
-	g_window = SDL_CreateWindow("Dino", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-		if (g_window == NULL)
-		{
-			success = false;
-		}
-		else
-		{
-			g_screen = SDL_CreateRenderer(g_window, -1, SDL_RENDERER_ACCELERATED);
-			if (g_screen == NULL)
-			{
-				success = false;
-			}
-			else
-			{
-				SDL_SetRenderDrawColor(g_screen, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR);
-				int imgFlags = IMG_INIT_PNG;
-				if (!(IMG_Init(imgFlags) && imgFlags))
-					success = false;
-			}
-		}
-		return success;
-}
-bool LoadBackground()
-{
-	bool ret = g_background.LoadImage("background.png", g_screen);
-	if (ret == false) { return false; }
-
-	return true;
-
-}
-void Close()
-{
-	g_background.Free();
-
-	SDL_DestroyRenderer(g_screen);
-	g_screen = NULL;
-
-	SDL_DestroyWindow(g_window);
-	g_window = NULL;
-
-	IMG_Quit();
-	SDL_Quit();
-
-}
-int main(int argc, char* argv[])
-{
-	if (InitData() == false) { return -1; }
-
-	if (LoadBackground() == false) { return -1; }
-	bool is_quit = false;
-	while (!is_quit) {
-		while (SDL_PollEvent(&g_event) != 0)
-		{
-			if (g_event.type == SDL_QUIT)
-			{
-				is_quit = true;
-			}
-
-			SDL_SetRenderDrawColor(g_screen, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR);
-			SDL_RenderClear(g_screen);
-
-			g_background.Render(g_screen, NULL);
-
-			SDL_RenderPresent(g_screen);
-
-		}
-	}
-	Close();
+	g->Clear();
 	return 0;
 }

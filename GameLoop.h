@@ -1,31 +1,27 @@
 #pragma once
-#ifndef GAME_LOOP_H_
-#define GAME_LOOP_H_
-
-#include "CommonFunction.h"
+#include<SDL.h>
+#include<SDL_image.h>
+#include<iostream>
+#include"Player.h"
+#include"Background.h"
 
 class GameLoop
 {
+private:
+	Player p;
+	Background b;
+	const int HEIGHT = 640;
+	const int WIDTH = 800;
+	bool GameState;
+	SDL_Window* window;
+	SDL_Event event1;
+	SDL_Renderer* renderer;
 public:
 	GameLoop();
-	~GameLoop();
-	void SetRect(const int& x, const int& y)
-	{
-		rect_.x = x;
-		rect_.y = y;
-	}
-	SDL_Rect GetRect() const {
-		return rect_;
-	}
-	SDL_Texture* GetObject() const {
-		return p_object_;
-	}
-	bool LoadImage(std::string path, SDL_Renderer* screen);
-	void Render(SDL_Renderer* des, const SDL_Rect* clip = NULL);
-	void Free();
-protected:
-	SDL_Texture* p_object_;
-	SDL_Rect rect_;
-
+	bool getGameState();
+	void Update();
+	void Intialize();
+	void Event();
+	void Render();
+	void Clear();
 };
-#endif // !GAME_LOOP_H_

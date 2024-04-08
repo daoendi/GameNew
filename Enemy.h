@@ -13,4 +13,4 @@ public:
 	void EnemyUpdate3();
 	void Render(SDL_Renderer* ren);
 	void EnemyRender(SDL_Renderer* ren);
-};
+}; 

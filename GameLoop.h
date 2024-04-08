@@ -5,9 +5,14 @@
 #include"Player.h"
 #include"Background.h"
 #include"Enemy.h"
+#include<stdlib.h>
+#include <SDL_ttf.h>
+#include"TextManager.h"
 class GameLoop
 {
 private:
+//	TTF_Font* font_time = NULL;
+//	Text time;
 	Player p;
 	Background b,b1,b3;
 	Background ground1, ground2;
@@ -19,6 +24,7 @@ private:
 	SDL_Window* window;
 	SDL_Event event1, event2;
 	SDL_Renderer* renderer;
+
 public:
 	GameLoop();
 	bool getGameState();

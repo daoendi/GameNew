@@ -15,9 +15,9 @@ void Background::GroundRender(SDL_Renderer* ren)
 
 void Background::GroundUpdate1(){
 
-	if (distance1 <= -800)
+	if (distance1 <= -750)
 	{
-		distance1 = 800;
+		distance1 = 750;
 	}
 	else
 	{
@@ -29,9 +29,9 @@ void Background::GroundUpdate1(){
 
 void Background::GroundUpdate2()
 {
-	if (distance2 <= -800)
+	if (distance2 <= -750)
 	{
-		distance2 = 800;
+		distance2 = 750;
 	}
 	else
 	{

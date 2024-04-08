@@ -1,4 +1,5 @@
 #include"GameLoop.h"
+#include <string>
 
 GameLoop::GameLoop()
 {
@@ -20,6 +21,8 @@ bool GameLoop::getGameState()
 
 void GameLoop::Intialize()
 {
+	//font_time = TTF_OpenFont("Font/pixel_font.ttf", 15);
+//	time.SetColor(Text::WHITE_TEXT);
 	SDL_Init(SDL_INIT_EVERYTHING);
 	window = SDL_CreateWindow("Dino", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, 0);
 	if (window)
@@ -29,6 +32,10 @@ void GameLoop::Intialize()
 		{
 			std::cout << "Succeeded!" << std::endl;
 			GameState = true;
+		//	std::string str_time = "Point:";
+			//Uint32 time_val = SDL_GetTicks() / 1000;
+			//std::string str_val = std::to_string(time_val);
+			//time.SetText(str_time);
 			p.CreateTexture("Image/dino1.png", renderer);
 			p.CreateTexture1("Image/dino2.png", renderer);
 			p.CreateTexture2("Image/dino3.png", renderer);
@@ -40,6 +47,8 @@ void GameLoop::Intialize()
 			mod3.CreateTexture("Image/enemy3.png", renderer);
 			ground1.CreateTexture("Image/base.png", renderer);
 			ground2.CreateTexture("Image/base.png", renderer);
+	//		time.LoadFromRenderText(&font_time, renderer);
+//time.RenderText(renderer, WIDTH - 200, 15);
 		}
 		else
 		{
@@ -50,6 +59,11 @@ void GameLoop::Intialize()
 	{
 		std::cout << "window not created!" << std::endl;
 	}
+	//if (TTF_Init() == -1)
+	//{
+	//	std::cout << "font error!";
+	//}
+	
 }
 
 void GameLoop::Event()
@@ -237,8 +251,9 @@ void GameLoop::Check()
 	SDL_Rect Fenemy1 = GameLoop::GetFrameE(mod1);
 	SDL_Rect Fenemy2 = GameLoop::GetFrameE(mod2);
 	SDL_Rect Fenemy3 = GameLoop::GetFrameE(mod3);
-	if(CheckCollision(cplayer,Fenemy1)|| CheckCollision(cplayer, Fenemy2) || CheckCollision(cplayer, Fenemy2))
+	if(CheckCollision(cplayer,Fenemy1)|| CheckCollision(cplayer, Fenemy2) || CheckCollision(cplayer, Fenemy3))
 	{
 		Close();
+		exit(0);
 	}
 }

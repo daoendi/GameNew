@@ -20,7 +20,7 @@ void Enemy::EnemyUpdate1()
 	else
 	{
 		distance1 -= 2;
-		setSrc(0, 0,96,96);
+		setSrc(0, 0,108,108);
 		setDest(distance1, 320, 108, 108);
 	}
 }

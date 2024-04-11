@@ -11,11 +11,15 @@ GameLoop::GameLoop()
 	p.setSrc(0, 0, 108, 108);
 	p.setDest(25, HEIGHT / 2, 108, 108);
 	bpause.setSrc(0, 0, 150, 150);
+	pausebutton.setSrc(0, 0, 50, 50);
+	pausebutton.setDest(750, 0, 50, 50);
 	bpause.setDest(325, 185, 150, 150);
 	ground1.setSrc(0, 0, 112,800);
 	ground1.setDest(0, 420, 112, 800);
 	ground2.setSrc(0, 0, 112, 800);
 	ground2.setDest(336, 420, 112, 800);
+	gameover.setSrc(0, 0, 520, 800);
+	gameover.setDest(0, 0, 520, 800);
 }
 bool GameLoop::getGameState()
 {
@@ -41,12 +45,9 @@ void GameLoop::Intialize()
 			
 			std::cout << "Succeeded!" << std::endl;
 			GameState = true;
-		//	std::string str_time = "Point:";
-			//Uint32 time_val = SDL_GetTicks() / 1000;
-			//std::string str_val = std::to_string(time_val);
-			//time.SetText(str_time);
 			bstart.CreateTexture("Image/menu.png", renderer);
 			p.CreateTexture("Image/dino1.png", renderer);
+			gameover.CreateTexture("Image/gameover.png", renderer);
 			p.CreateTexture1("Image/dino2.png", renderer);
 			p.CreateTexture2("Image/dino3.png", renderer);
 			b.CreateTexture("Image/background2.png", renderer);
@@ -58,8 +59,7 @@ void GameLoop::Intialize()
 			ground1.CreateTexture("Image/base.png", renderer);
 			ground2.CreateTexture("Image/base.png", renderer);
 			bpause.CreateTexture("Image/pause.png", renderer);
-	//		time.LoadFromRenderText(&font_time, renderer);
-//time.RenderText(renderer, WIDTH - 200, 15);
+			pausebutton.CreateTexture("Image/pause2.png", renderer);
 		}
 		else
 		{
@@ -70,17 +70,13 @@ void GameLoop::Intialize()
 	{
 		std::cout << "window not created!" << std::endl;
 	}
-	//if (TTF_Init() == -1)
-	//{
-	//	std::cout << "font error!";
-	//}
-	
 }
 
 void GameLoop::Event()
 {
 	p.GetJumpTime();
 	SDL_PollEvent(&event1);
+
 	if (event1.type == SDL_QUIT)
 	{
 		GameState = false;
@@ -135,6 +131,12 @@ void GameLoop::RenderMenu()
 	bstart.Render(renderer);
 	SDL_RenderPresent(renderer);
 }
+void GameLoop::RenderPause()
+{
+	SDL_RenderClear(renderer);
+	pausebutton.GroundRender(renderer);
+	SDL_RenderPresent(renderer);
+}
 void GameLoop::Render()
 {
 
@@ -148,6 +150,10 @@ void GameLoop::Render()
 		if (gamepause % 2 == 1)
 		{
 			bpause.GroundRender(renderer);
+		}
+		else
+		{
+			pausebutton.GroundRender(renderer);
 		}
 		p.PlayerRender(renderer, gamepause);
 		mod1.EnemyRender(renderer);
@@ -291,14 +297,17 @@ void GameLoop::Check()
 	SDL_Rect Fenemy3 = GameLoop::GetFrameE(mod3);
 	if(CheckCollision(cplayer,Fenemy1)|| CheckCollision(cplayer, Fenemy2) || CheckCollision(cplayer, Fenemy3))
 	{
-		Close();
-		exit(0);
+		GameEnd = true;
 	}
 }
+bool GameLoop::checkgameover()
+{
+	return GameEnd;
+}
 
-void GameLoop::RenderPause()
+void GameLoop::RenderOver()
 {
 	SDL_RenderClear(renderer);
-	bpause.GroundRender(renderer);
+	gameover.GroundRender(renderer);
 	SDL_RenderPresent(renderer);
 }

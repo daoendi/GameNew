@@ -17,6 +17,7 @@ private:
 	Background b,b1,b3;
 	Background ground1, ground2;
 	Background bstart, bpause;
+	Background gameover,pausebutton;
 	Enemy mod1,mod2,mod3;
 	const int HEIGHT = 520;
 	const int WIDTH = 800;
@@ -32,6 +33,7 @@ private:
 public:
 	int start();
 	int pause();
+	bool checkgameover();
 	GameLoop();
 	bool getGameState();
 	void Update();
@@ -40,7 +42,8 @@ public:
 	void Render();
 	void RenderMenu();
 	void RenderPause();
-	void Clear();
+	void RenderOver();
+	void Clear();       
 	void Close();
 	SDL_Rect GetFrameP(Player p);
 	SDL_Rect GetFrameE(Enemy p);

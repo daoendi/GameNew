@@ -6,23 +6,31 @@ GameLoop::GameLoop()
 	window = NULL;
 	renderer = NULL;
 	GameState = false;
+	gamestart = 0;
+	gamepause = 0;
 	p.setSrc(0, 0, 108, 108);
 	p.setDest(25, HEIGHT / 2, 108, 108);
+	bpause.setSrc(0, 0, 150, 150);
+	bpause.setDest(325, 185, 150, 150);
 	ground1.setSrc(0, 0, 112,800);
 	ground1.setDest(0, 420, 112, 800);
 	ground2.setSrc(0, 0, 112, 800);
 	ground2.setDest(336, 420, 112, 800);
 }
-
 bool GameLoop::getGameState()
 {
 	return GameState;
 }
 
+int GameLoop::pause()
+{
+	return gamepause;
+}
+
 void GameLoop::Intialize()
 {
-	//font_time = TTF_OpenFont("Font/pixel_font.ttf", 15);
-//	time.SetColor(Text::WHITE_TEXT);
+	
+
 	SDL_Init(SDL_INIT_EVERYTHING);
 	window = SDL_CreateWindow("Dino", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, 0);
 	if (window)
@@ -30,12 +38,14 @@ void GameLoop::Intialize()
 		renderer = SDL_CreateRenderer(window, -1, 0);
 		if (renderer)
 		{
+			
 			std::cout << "Succeeded!" << std::endl;
 			GameState = true;
 		//	std::string str_time = "Point:";
 			//Uint32 time_val = SDL_GetTicks() / 1000;
 			//std::string str_val = std::to_string(time_val);
 			//time.SetText(str_time);
+			bstart.CreateTexture("Image/menu.png", renderer);
 			p.CreateTexture("Image/dino1.png", renderer);
 			p.CreateTexture1("Image/dino2.png", renderer);
 			p.CreateTexture2("Image/dino3.png", renderer);
@@ -47,6 +57,7 @@ void GameLoop::Intialize()
 			mod3.CreateTexture("Image/enemy3.png", renderer);
 			ground1.CreateTexture("Image/base.png", renderer);
 			ground2.CreateTexture("Image/base.png", renderer);
+			bpause.CreateTexture("Image/pause.png", renderer);
 	//		time.LoadFromRenderText(&font_time, renderer);
 //time.RenderText(renderer, WIDTH - 200, 15);
 		}
@@ -82,11 +93,23 @@ void GameLoop::Event()
 			{
 					p.Jump();
 					std::cout << " pes";
+					//gamestart = true;
+					//gamepause = false;
 			}
 			else
 			{
 				p.Gravity();
 			}
+		}
+		if (event1.key.keysym.sym == SDLK_p)
+		{
+			//gamestart = false;
+			gamepause ++;
+		}
+		if (event1.key.keysym.sym == SDLK_s)
+		{
+			gamestart ++;
+			//gamepause = true;
 		}
 	}
 	else
@@ -94,7 +117,10 @@ void GameLoop::Event()
 		p.Gravity();
 	}
 }
-
+int GameLoop::start()
+{
+	return gamestart;
+}
 void GameLoop::Update()
 {
 	ground1.GroundUpdate1();
@@ -103,20 +129,32 @@ void GameLoop::Update()
 	mod2.EnemyUpdate2();
 	mod3.EnemyUpdate3();
 }
-
-void GameLoop::Render()
+void GameLoop::RenderMenu()
 {
 	SDL_RenderClear(renderer);
-	b.Render(renderer);
-	b1.Render(renderer);
-	b3.Render(renderer);
-	ground1.GroundRender(renderer);
-	ground2.GroundRender(renderer);
-	mod1.EnemyRender(renderer);
-	mod2.EnemyRender(renderer);
-	mod3.EnemyRender(renderer);
-	p.Render(renderer);
+	bstart.Render(renderer);
 	SDL_RenderPresent(renderer);
+}
+void GameLoop::Render()
+{
+
+		
+		SDL_RenderClear(renderer);
+		b.Render(renderer);
+		b1.Render(renderer);
+		b3.Render(renderer);
+		ground1.GroundRender(renderer);
+		ground2.GroundRender(renderer);
+		if (gamepause % 2 == 1)
+		{
+			bpause.GroundRender(renderer);
+		}
+		p.PlayerRender(renderer, gamepause);
+		mod1.EnemyRender(renderer);
+		mod2.EnemyRender(renderer);
+		mod3.EnemyRender(renderer);
+		
+		SDL_RenderPresent(renderer);
 }
 
 void GameLoop::Clear()
@@ -256,4 +294,11 @@ void GameLoop::Check()
 		Close();
 		exit(0);
 	}
+}
+
+void GameLoop::RenderPause()
+{
+	SDL_RenderClear(renderer);
+	bpause.GroundRender(renderer);
+	SDL_RenderPresent(renderer);
 }

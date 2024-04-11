@@ -16,22 +16,30 @@ private:
 	Player p;
 	Background b,b1,b3;
 	Background ground1, ground2;
+	Background bstart, bpause;
 	Enemy mod1,mod2,mod3;
 	const int HEIGHT = 520;
 	const int WIDTH = 800;
 	bool GameState;
 	bool GameEnd;
 	SDL_Window* window;
-	SDL_Event event1, event2;
+	SDL_Event event, event1, event2;
 	SDL_Renderer* renderer;
-
+	int x_event, y_event;
+	int gamestart;
+	int gamepause;
+	
 public:
+	int start();
+	int pause();
 	GameLoop();
 	bool getGameState();
 	void Update();
 	void Intialize();
 	void Event();
 	void Render();
+	void RenderMenu();
+	void RenderPause();
 	void Clear();
 	void Close();
 	SDL_Rect GetFrameP(Player p);

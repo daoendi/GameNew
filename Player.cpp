@@ -1,26 +1,54 @@
 #include "Player.h"
 #include<iostream>
-
+#include"GameLoop.h"
 void Player::Render(SDL_Renderer* ren)
+{
+	SDL_Rect scra = getSrc();
+	SDL_Rect destb = getDest();
+	SDL_RenderCopyEx(ren, getTexture(), &scra, &destb, 0, NULL, SDL_FLIP_NONE);
+}
+void Player::PlayerRender(SDL_Renderer* ren, int a)
 {
     SDL_Rect scra = getSrc();
     SDL_Rect destb = getDest();
-	animationTimer++;
-	if (animationTimer < 16)
+	if (a % 2 == 0)
 	{
-		SDL_RenderCopyEx(ren, getTexture(), &scra, &destb, 0, NULL, SDL_FLIP_NONE);
+		animationTimer++;
+		if (animationTimer < 16)
+		{
+			SDL_RenderCopyEx(ren, getTexture(), &scra, &destb, 0, NULL, SDL_FLIP_NONE);
+		}
+		else if (animationTimer >= 16 && animationTimer <= 32)
+		{
+			SDL_RenderCopyEx(ren, Tex1, &scra, &destb, 0, NULL, SDL_FLIP_NONE);
+		}
+		else if (animationTimer > 32)
+		{
+			SDL_RenderCopyEx(ren, Tex2, &scra, &destb, 0, NULL, SDL_FLIP_NONE);
+		}
+		if (animationTimer > 48)
+		{
+			animationTimer = 0;
+		}
 	}
-	else if (animationTimer >= 16 && animationTimer <= 32)
+	else
 	{
-		SDL_RenderCopyEx(ren, Tex1, &scra, &destb, 0, NULL, SDL_FLIP_NONE);
-	}
-	else if (animationTimer > 32)
-	{
-		SDL_RenderCopyEx(ren, Tex2, &scra, &destb, 0, NULL, SDL_FLIP_NONE);
-	}
-	if (animationTimer > 48)
-	{
-		animationTimer = 0;
+		if (animationTimer < 16)
+		{
+			SDL_RenderCopyEx(ren, getTexture(), &scra, &destb, 0, NULL, SDL_FLIP_NONE);
+		}
+		else if (animationTimer >= 16 && animationTimer <= 32)
+		{
+			SDL_RenderCopyEx(ren, Tex1, &scra, &destb, 0, NULL, SDL_FLIP_NONE);
+		}
+		else if (animationTimer > 32)
+		{
+			SDL_RenderCopyEx(ren, Tex2, &scra, &destb, 0, NULL, SDL_FLIP_NONE);
+		}
+		if (animationTimer > 48)
+		{
+			animationTimer = 0;
+		}
 	}
 }
 

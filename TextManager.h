@@ -1,9 +1,8 @@
-#ifndef TEXT_MANAGER_H_
-#define TEXT_MANAGER_H_
+#pragma once
 
 
 #include "GameLoop.h"
-#include "SDL_ttf.h"
+#include <SDL_ttf.h>
 class Text
 {
 public:
@@ -31,4 +30,3 @@ private:
 	int Twidth;
 	int Theight;
 };
-#endif // !TEXT_MANAGER_H_

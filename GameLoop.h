@@ -7,12 +7,12 @@
 #include"Enemy.h"
 #include<stdlib.h>
 #include <SDL_ttf.h>
+#include "Sound.h"
 #include"TextManager.h"
 class GameLoop
 {
 private:
-//	TTF_Font* font_time = NULL;
-//	Text time;
+	Music gamemusic,jumpsound,oversound;
 	Player p;
 	Background b,b1,b3;
 	Background ground1, ground2;
@@ -27,11 +27,11 @@ private:
 	SDL_Event event, event1, event2;
 	SDL_Renderer* renderer;
 	int x_event, y_event;
-	int gamestart;
+	//bool gamestart;
 	int gamepause;
-	
+	bool over = true;
 public:
-	int start();
+//	bool start();
 	int pause();
 	bool checkgameover();
 	GameLoop();
@@ -41,7 +41,7 @@ public:
 	void Event();
 	void Render();
 	void RenderMenu();
-	void RenderPause();
+	//void RenderPause();
 	void RenderOver();
 	void Clear();       
 	void Close();

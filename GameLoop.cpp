@@ -6,7 +6,7 @@ GameLoop::GameLoop()
 	window = NULL;
 	renderer = NULL;
 	GameState = false;
-	gamestart = 0;
+//	gamestart = 0;
 	gamepause = 0;
 	p.setSrc(0, 0, 108, 108);
 	p.setDest(25, HEIGHT / 2, 108, 108);
@@ -32,17 +32,24 @@ int GameLoop::pause()
 }
 
 void GameLoop::Intialize()
-{
-	
+{	
 
+	
 	SDL_Init(SDL_INIT_EVERYTHING);
 	window = SDL_CreateWindow("Dino", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, 0);
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+		//logErrorAndExit("SDL_mixer could not initialize! SDL_mixer Error: %s\n",
+			Mix_GetError();
+	}
+
 	if (window)
 	{
 		renderer = SDL_CreateRenderer(window, -1, 0);
 		if (renderer)
 		{
-			
+			gamemusic.loadMusic("Sound/bkgr_audio.wav");
+			jumpsound.loadSound("Sound/jump_sound.wav");
+			oversound.loadSound("Sound/lose_sound.wav"); 
 			std::cout << "Succeeded!" << std::endl;
 			GameState = true;
 			bstart.CreateTexture("Image/menu.png", renderer);
@@ -70,6 +77,7 @@ void GameLoop::Intialize()
 	{
 		std::cout << "window not created!" << std::endl;
 	}
+	gamemusic.playMusic();
 }
 
 void GameLoop::Event()
@@ -89,6 +97,7 @@ void GameLoop::Event()
 			{
 					p.Jump();
 					std::cout << " pes";
+					jumpsound.playSound();
 					//gamestart = true;
 					//gamepause = false;
 			}
@@ -102,21 +111,21 @@ void GameLoop::Event()
 			//gamestart = false;
 			gamepause ++;
 		}
-		if (event1.key.keysym.sym == SDLK_s)
-		{
-			gamestart ++;
+		//if (event1.key.keysym.sym == SDLK_s)
+		//{
+		//	gamestart = true;
 			//gamepause = true;
-		}
+		//}
 	}
 	else
 	{
 		p.Gravity();
 	}
 }
-int GameLoop::start()
-{
-	return gamestart;
-}
+//bool GameLoop::start()
+//{
+//	return gamestart;
+//}
 void GameLoop::Update()
 {
 	ground1.GroundUpdate1();
@@ -131,12 +140,12 @@ void GameLoop::RenderMenu()
 	bstart.Render(renderer);
 	SDL_RenderPresent(renderer);
 }
-void GameLoop::RenderPause()
-{
-	SDL_RenderClear(renderer);
-	pausebutton.GroundRender(renderer);
-	SDL_RenderPresent(renderer);
-}
+//void GameLoop::RenderPause()
+//{
+//	SDL_RenderClear(renderer);
+//	pausebutton.GroundRender(renderer);
+//	SDL_RenderPresent(renderer);
+//}
 void GameLoop::Render()
 {
 
@@ -180,8 +189,6 @@ bool GameLoop::CheckCollision(const SDL_Rect& object1, const SDL_Rect& object2)
 	int right_b = object2.x + object2.w;
 	int top_b = object2.y;
 	int bottom_b = object2.y + object2.h;
-
-	// Case 1: size object 1 < size object 2
 	if (left_a > left_b && left_a < right_b)
 	{
 		if (top_a > top_b && top_a < bottom_b)
@@ -214,7 +221,6 @@ bool GameLoop::CheckCollision(const SDL_Rect& object1, const SDL_Rect& object2)
 		}
 	}
 
-	// Case 2: size object 1 < size object 2
 	if (left_b > left_a && left_b < right_a)
 	{
 		if (top_b > top_a && top_b < bottom_a)
@@ -246,8 +252,6 @@ bool GameLoop::CheckCollision(const SDL_Rect& object1, const SDL_Rect& object2)
 			return true;
 		}
 	}
-
-	// Case 3: size object 1 = size object 2
 	if (top_a == top_b && right_a == right_b && bottom_a == bottom_b)
 	{
 		return true;
@@ -306,7 +310,17 @@ bool GameLoop::checkgameover()
 }
 
 void GameLoop::RenderOver()
-{
+{if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+		//logErrorAndExit("SDL_mixer could not initialize! SDL_mixer Error: %s\n",
+			Mix_GetError();
+	}
+	
+	gamemusic.stopMusic();
+	if (over)
+	{
+		oversound.playSound();
+		over = NULL;
+	}
 	SDL_RenderClear(renderer);
 	gameover.GroundRender(renderer);
 	SDL_RenderPresent(renderer);

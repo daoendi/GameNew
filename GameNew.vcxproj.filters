@@ -12,14 +12,19 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="CommonFunction.cpp" />
+    <ClCompile Include="Object.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="TextManager.cpp" />
+    <ClCompile Include="Sound.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameLoop.h" />
     <ClInclude Include="Background.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="TextureManager.h" />
+    <ClInclude Include="Object.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="TextManager.h" />
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="CommonFunction.h" />
+    <ClInclude Include="Sound.h" />
   </ItemGroup>
 </Project>

@@ -4,6 +4,7 @@
 class Enemy: public Object
 {
 private:
+	int accelerator = 0;
 	int distance1 = 800;
 	int distance2 = 1200;
 	int distance3 = 1600;

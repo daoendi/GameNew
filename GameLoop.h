@@ -14,7 +14,7 @@ class GameLoop
 private:
 	Music gamemusic,jumpsound,oversound;
 	Player p;
-	Background b,b1,b3;
+	Background b,b1,b2;
 	Background ground1, ground2;
 	Background bstart, bpause;
 	Background gameover,pausebutton;
@@ -24,14 +24,13 @@ private:
 	bool GameState;
 	bool GameEnd;
 	SDL_Window* window;
-	SDL_Event event, event1, event2;
+	SDL_Event event1;
 	SDL_Renderer* renderer;
-	int x_event, y_event;
-	//bool gamestart;
+	
 	int gamepause;
 	bool over = true;
+	SDL_Color color = { 255, 255, 0, 0 };
 public:
-//	bool start();
 	int pause();
 	bool checkgameover();
 	GameLoop();
@@ -41,10 +40,8 @@ public:
 	void Event();
 	void Render();
 	void RenderMenu();
-	//void RenderPause();
 	void RenderOver();
-	void Clear();       
-	void Close();
+	void Clear();       ;
 	SDL_Rect GetFrameP(Player p);
 	SDL_Rect GetFrameE(Enemy p);
 	void Check();

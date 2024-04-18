@@ -52,6 +52,8 @@ void Music::playMusic(int loop)
 
 void Music::playSound(int loop)
 {
+	SDL_Delay(10);
+
 	if (sound) Mix_PlayChannel(loop, sound,0);
 		check = true;
 }
@@ -65,24 +67,4 @@ void Music::pauseMusic()
 {
 	if (music) Mix_PausedMusic();
 }
-
-bool Music::inPlay()
-{
-	if (music) return Mix_PlayingMusic();
-	if (sound) return Mix_Playing(-1);
-}
-
-void Music::reset()
-{
-	check = false;
-}
-
-void Music::checkMusic()
-{
-	if (music) Mix_ResumeMusic();
-}
-
-
-
-
 

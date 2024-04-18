@@ -1,7 +1,7 @@
 #pragma once
 #include<SDL_mixer.h>
 #include <iostream>
-
+#include <SDL.h>
 class Music
 {
 private:
@@ -17,8 +17,5 @@ public:
 	void playSound(int loop = -1);
 	void stopMusic();
 	void pauseMusic();
-	bool inPlay();
-	void reset();
-	void checkMusic();
 
 };

@@ -1,19 +1,23 @@
 #include"GameLoop.h"
 #include <string>
 
+
 GameLoop::GameLoop()
 {
 	window = NULL;
 	renderer = NULL;
 	GameState = false;
-//	gamestart = 0;
 	gamepause = 0;
 	p.setSrc(0, 0, 108, 108);
 	p.setDest(25, HEIGHT / 2, 108, 108);
-	bpause.setSrc(0, 0, 150, 150);
 	pausebutton.setSrc(0, 0, 50, 50);
 	pausebutton.setDest(750, 0, 50, 50);
+	bpause.setSrc(0, 0, 150, 150);
 	bpause.setDest(325, 185, 150, 150);
+	b1.setSrc(0, 0, 520, 800);
+	b1.setDest(0, 520, 520, 800);
+	b2.setSrc(0, 0, 520, 800);
+	b2.setDest(336, 520, 112, 800);
 	ground1.setSrc(0, 0, 112,800);
 	ground1.setDest(0, 420, 112, 800);
 	ground2.setSrc(0, 0, 112, 800);
@@ -38,7 +42,6 @@ void GameLoop::Intialize()
 	SDL_Init(SDL_INIT_EVERYTHING);
 	window = SDL_CreateWindow("Dino", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, 0);
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
-		//logErrorAndExit("SDL_mixer could not initialize! SDL_mixer Error: %s\n",
 			Mix_GetError();
 	}
 
@@ -47,19 +50,18 @@ void GameLoop::Intialize()
 		renderer = SDL_CreateRenderer(window, -1, 0);
 		if (renderer)
 		{
+			GameState = true;
 			gamemusic.loadMusic("Sound/bkgr_audio.wav");
 			jumpsound.loadSound("Sound/jump_sound.wav");
 			oversound.loadSound("Sound/lose_sound.wav"); 
-			std::cout << "Succeeded!" << std::endl;
-			GameState = true;
 			bstart.CreateTexture("Image/menu.png", renderer);
 			p.CreateTexture("Image/dino1.png", renderer);
 			gameover.CreateTexture("Image/gameover.png", renderer);
 			p.CreateTexture1("Image/dino2.png", renderer);
 			p.CreateTexture2("Image/dino3.png", renderer);
-			b.CreateTexture("Image/background2.png", renderer);
+			b.CreateTexture("Image/background.png", renderer);
 			b1.CreateTexture("Image/texture1.png", renderer);
-			b3.CreateTexture("Image/texture3.png", renderer);
+			b2.CreateTexture("Image/texture1.png", renderer);
 			mod1.CreateTexture("Image/enemy1.png", renderer);
 			mod2.CreateTexture("Image/enemy2.png", renderer);
 			mod3.CreateTexture("Image/enemy3.png", renderer);
@@ -84,22 +86,43 @@ void GameLoop::Event()
 {
 	p.GetJumpTime();
 	SDL_PollEvent(&event1);
-
+	
+	if (gamepause % 2 == 1)
+	{
+		if (event1.button.button == SDL_BUTTON_LEFT)
+		{
+			gamepause++;
+			event1.button.button = NULL;
+		}
+	}
+	else
+	{
+		if (event1.button.button == SDL_BUTTON_LEFT)
+		{
+			if (event1.button.x > 600 and event1.button.x < 800 and event1.button.y > 0 and event1.button.y < 150)
+			{
+				gamepause++;
+				event1.button.button = NULL;
+			}
+		}
+	}
 	if (event1.type == SDL_QUIT)
 	{
-		GameState = false;
+		exit(0);
 	}
 	if (event1.type == SDL_KEYDOWN)
 	{
 		if (event1.key.keysym.sym == SDLK_SPACE)
 		{
+			if (gamepause % 2 == 1)
+			{
+					gamepause++;
+			}
 			if (!p.JumpState())
 			{
 					p.Jump();
 					std::cout << " pes";
 					jumpsound.playSound();
-					//gamestart = true;
-					//gamepause = false;
 			}
 			else
 			{
@@ -108,26 +131,19 @@ void GameLoop::Event()
 		}
 		if (event1.key.keysym.sym == SDLK_p)
 		{
-			//gamestart = false;
 			gamepause ++;
 		}
-		//if (event1.key.keysym.sym == SDLK_s)
-		//{
-		//	gamestart = true;
-			//gamepause = true;
-		//}
+		
 	}
 	else
 	{
 		p.Gravity();
 	}
 }
-//bool GameLoop::start()
-//{
-//	return gamestart;
-//}
 void GameLoop::Update()
 {
+	b1.BackUpdate1();
+	b2.BackUpdate2();
 	ground1.GroundUpdate1();
 	ground2.GroundUpdate2();
 	mod1.EnemyUpdate1();
@@ -140,20 +156,12 @@ void GameLoop::RenderMenu()
 	bstart.Render(renderer);
 	SDL_RenderPresent(renderer);
 }
-//void GameLoop::RenderPause()
-//{
-//	SDL_RenderClear(renderer);
-//	pausebutton.GroundRender(renderer);
-//	SDL_RenderPresent(renderer);
-//}
 void GameLoop::Render()
 {
-
-		
 		SDL_RenderClear(renderer);
 		b.Render(renderer);
-		b1.Render(renderer);
-		b3.Render(renderer);
+		b1.GroundRender(renderer);
+		b2.GroundRender(renderer);
 		ground1.GroundRender(renderer);
 		ground2.GroundRender(renderer);
 		if (gamepause % 2 == 1)
@@ -168,16 +176,13 @@ void GameLoop::Render()
 		mod1.EnemyRender(renderer);
 		mod2.EnemyRender(renderer);
 		mod3.EnemyRender(renderer);
-		
 		SDL_RenderPresent(renderer);
 }
-
 void GameLoop::Clear()
 {
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 }
-
 bool GameLoop::CheckCollision(const SDL_Rect& object1, const SDL_Rect& object2) 
 {
 	int left_a = object1.x;
@@ -259,17 +264,6 @@ bool GameLoop::CheckCollision(const SDL_Rect& object1, const SDL_Rect& object2)
 
 	return false;
 }
-void GameLoop::Close()
-{
-	SDL_DestroyWindow(window);
-	SDL_DestroyRenderer(renderer);
-	window = NULL;
-	renderer = NULL;
-	IMG_Quit();
-	//Mix_Quit();
-	//TTF_Quit();
-	SDL_Quit();
-}
 SDL_Rect GameLoop::GetFrameP( Player p)
 {
 	SDL_Rect rectF = {};
@@ -279,7 +273,6 @@ SDL_Rect GameLoop::GetFrameP( Player p)
 	rectF.w = scra.w / 8;
 	rectF.h = scra.h;
 	return rectF;
-	
 }
 SDL_Rect GameLoop::GetFrameE( Enemy e)
 {
@@ -308,13 +301,10 @@ bool GameLoop::checkgameover()
 {
 	return GameEnd;
 }
-
 void GameLoop::RenderOver()
 {if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
-		//logErrorAndExit("SDL_mixer could not initialize! SDL_mixer Error: %s\n",
 			Mix_GetError();
 	}
-	
 	gamemusic.stopMusic();
 	if (over)
 	{

@@ -20,19 +20,24 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Background.cpp" />
-    <ClCompile Include="CommonFunction.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="GameLoop.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Object.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Sound.cpp" />
+    <ClCompile Include="TextManager.cpp" />
     <ClCompile Include="TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Background.h" />
-    <ClInclude Include="CommonFunction.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="GameLoop.h" />
+    <ClInclude Include="Object.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="resource.h" />
+    <ClInclude Include="Sound.h" />
     <ClInclude Include="TextManager.h" />
+    <ClInclude Include="TextureManager.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

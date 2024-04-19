@@ -8,6 +8,8 @@ private:
 	Mix_Chunk* sound;
 	Mix_Music* music;
 	bool check;
+	double jumpTimer;
+	double lastJump = 0;
 public: 
 	Music();
 	~Music();

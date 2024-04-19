@@ -52,10 +52,14 @@ void Music::playMusic(int loop)
 
 void Music::playSound(int loop)
 {
-	SDL_Delay(10);
+	jumpTimer = SDL_GetTicks();
+	if (jumpTimer - lastJump > 900)
+	{
+		lastJump = jumpTimer;
 
-	if (sound) Mix_PlayChannel(loop, sound,0);
+		if (sound) Mix_PlayChannel(loop, sound, 0);
 		check = true;
+	}
 }
 
 void Music::stopMusic()

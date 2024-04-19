@@ -53,7 +53,7 @@ void Music::playMusic(int loop)
 void Music::playSound(int loop)
 {
 	jumpTimer = SDL_GetTicks();
-	if (jumpTimer - lastJump > 900)
+	if (jumpTimer - lastJump > 920)
 	{
 		lastJump = jumpTimer;
 

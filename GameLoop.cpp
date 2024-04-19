@@ -1,4 +1,4 @@
-#include"GameLoop.h"
+﻿#include"GameLoop.h"
 #include <string>
 
 
@@ -40,7 +40,7 @@ void GameLoop::Intialize()
 
 	
 	SDL_Init(SDL_INIT_EVERYTHING);
-	window = SDL_CreateWindow("Dino", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, 0);
+	window = SDL_CreateWindow("Dino_Endi", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, 0);
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
 			Mix_GetError();
 	}
@@ -91,8 +91,9 @@ void GameLoop::Event()
 	{
 		if (event1.button.button == SDL_BUTTON_LEFT)
 		{
-			gamepause++;
+			
 			event1.button.button = NULL;
+			gamepause++;
 		}
 	}
 	else
@@ -101,8 +102,9 @@ void GameLoop::Event()
 		{
 			if (event1.button.x > 600 and event1.button.x < 800 and event1.button.y > 0 and event1.button.y < 150)
 			{
-				gamepause++;
+				
 				event1.button.button = NULL;
+				gamepause++;
 			}
 		}
 	}
@@ -129,7 +131,7 @@ void GameLoop::Event()
 				p.Gravity();
 			}
 		}
-		if (event1.key.keysym.sym == SDLK_p)
+		if (event1.key.keysym.sym == SDLK_c)
 		{
 			gamepause ++;
 		}
@@ -302,7 +304,7 @@ bool GameLoop::checkgameover()
 	return GameEnd;
 }
 void GameLoop::RenderOver()
-{if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+{if (Mix_OpenAudio(60000, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
 			Mix_GetError();
 	}
 	gamemusic.stopMusic();

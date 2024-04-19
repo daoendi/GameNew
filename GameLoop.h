@@ -26,10 +26,8 @@ private:
 	SDL_Window* window;
 	SDL_Event event1;
 	SDL_Renderer* renderer;
-	
 	int gamepause;
 	bool over = true;
-	SDL_Color color = { 255, 255, 0, 0 };
 public:
 	int pause();
 	bool checkgameover();
@@ -41,7 +39,7 @@ public:
 	void Render();
 	void RenderMenu();
 	void RenderOver();
-	void Clear();       ;
+	void Clear();   
 	SDL_Rect GetFrameP(Player p);
 	SDL_Rect GetFrameE(Enemy p);
 	void Check();

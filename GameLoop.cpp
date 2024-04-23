@@ -2,12 +2,13 @@
 #include <string>
 
 
+
 GameLoop::GameLoop()
 {
-	window = NULL;
-	renderer = NULL;
 	GameState = false;
 	gamepause = 0;
+	score = 0;
+	Highscore();
 	p.setSrc(0, 0, 108, 108);
 	p.setDest(25, HEIGHT / 2, 108, 108);
 	pausebutton.setSrc(0, 0, 50, 50);
@@ -28,29 +29,65 @@ GameLoop::GameLoop()
 bool GameLoop::getGameState()
 {
 	return GameState;
-}
-
+} 
 int GameLoop::pause()
 {
 	return gamepause;
 }
+TTF_Font* GameLoop::loadFont(const char* path, int size)
+{
+	TTF_Font* font = TTF_OpenFont(path, size);
+	if (font == nullptr) {
+		SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION,
+			SDL_LOG_PRIORITY_ERROR,
+			"Load font %s", TTF_GetError());
+	}
+	return font;
+}
+SDL_Texture* GameLoop::RenderText( const std::string& text, TTF_Font* font, SDL_Color color,int score)
+{	
+	
+	std::string scorestr = text + std::to_string(score) ;
+	
+	SDL_Surface* textSurface = TTF_RenderText_Solid(font, scorestr.c_str(), color);
+	if (textSurface == nullptr) {
+		SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_ERROR, "Render text surface %s", TTF_GetError());
+		return nullptr;
+	}
 
-void GameLoop::Intialize()
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, textSurface);
+	if (texture == nullptr) {
+		SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_ERROR, "Create texture from text %s", SDL_GetError());
+	}
+	SDL_FreeSurface(textSurface);
+	return texture;
+}
+void GameLoop::TextRender(SDL_Texture* texture, int x, int y, SDL_Renderer* renderer)
+{
+	SDL_Rect dest;
+	dest.x = x;
+	dest.y = y;
+	SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h);
+
+	SDL_RenderCopy(renderer, texture, NULL, &dest);
+}
+void GameLoop::Initalize()
 {	
 
-	
 	SDL_Init(SDL_INIT_EVERYTHING);
 	window = SDL_CreateWindow("Dino_Endi", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, 0);
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
 			Mix_GetError();
 	}
-
 	if (window)
 	{
 		renderer = SDL_CreateRenderer(window, -1, 0);
 		if (renderer)
 		{
+			TTF_Init();
 			GameState = true;
+			fontscore = loadFont("Font/eurof55.ttf", 40);
+			//fonttex = RenderText("Score: ", fontscore, color);
 			gamemusic.loadMusic("Sound/bkgr_audio.wav");
 			jumpsound.loadSound("Sound/jump_sound.wav");
 			oversound.loadSound("Sound/lose_sound.wav"); 
@@ -81,7 +118,6 @@ void GameLoop::Intialize()
 	}
 	gamemusic.playMusic();
 }
-
 void GameLoop::Event()
 {
 	p.GetJumpTime();
@@ -144,6 +180,7 @@ void GameLoop::Event()
 }
 void GameLoop::Update()
 {
+	
 	b1.BackUpdate1();
 	b2.BackUpdate2();
 	ground1.GroundUpdate1();
@@ -151,6 +188,7 @@ void GameLoop::Update()
 	mod1.EnemyUpdate1();
 	mod2.EnemyUpdate2();
 	mod3.EnemyUpdate3();
+	
 }
 void GameLoop::RenderMenu()
 {
@@ -178,24 +216,32 @@ void GameLoop::Render()
 		mod1.EnemyRender(renderer);
 		mod2.EnemyRender(renderer);
 		mod3.EnemyRender(renderer);
+		score += 1;
+		fonttex = RenderText("Score: ", fontscore, black, score/100);
+		TextRender(fonttex, 20, 20, renderer);
+		getHighscore();
+		fonttex2 = RenderText("High Score: ", fontscore, black, best);
+		TextRender(fonttex2, 20, 50, renderer);
 		SDL_RenderPresent(renderer);
+		SDL_DestroyTexture(fonttex);
+		SDL_DestroyTexture(fonttex2);
 }
 void GameLoop::Clear()
 {
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 }
-bool GameLoop::CheckCollision(const SDL_Rect& object1, const SDL_Rect& object2) 
+bool GameLoop::CheckCollision(const SDL_Rect& rect1, const SDL_Rect& rect2) 
 {
-	int left_a = object1.x;
-	int right_a = object1.x + object1.w;
-	int top_a = object1.y;
-	int bottom_a = object1.y + object1.h;
+	int left_a = rect1.x;
+	int right_a = rect1.x + rect1.w;
+	int top_a = rect1.y;
+	int bottom_a = rect1.y + rect1.h;
 
-	int left_b = object2.x;
-	int right_b = object2.x + object2.w;
-	int top_b = object2.y;
-	int bottom_b = object2.y + object2.h;
+	int left_b = rect2.x;
+	int right_b = rect2.x + rect2.w;
+	int top_b = rect2.y;
+	int bottom_b = rect2.y + rect2.h;
 	if (left_a > left_b && left_a < right_b)
 	{
 		if (top_a > top_b && top_a < bottom_b)
@@ -228,42 +274,7 @@ bool GameLoop::CheckCollision(const SDL_Rect& object1, const SDL_Rect& object2)
 		}
 	}
 
-	if (left_b > left_a && left_b < right_a)
-	{
-		if (top_b > top_a && top_b < bottom_a)
-		{
-			return true;
-		}
-	}
-
-	if (left_b > left_a && left_b < right_a)
-	{
-		if (bottom_b > top_a && bottom_b < bottom_a)
-		{
-			return true;
-		}
-	}
-
-	if (right_b > left_a && right_b < right_a)
-	{
-		if (top_b > top_a && top_b < bottom_a)
-		{
-			return true;
-		}
-	}
-
-	if (right_b > left_a && right_b < right_a)
-	{
-		if (bottom_b > top_a && bottom_b < bottom_a)
-		{
-			return true;
-		}
-	}
-	if (top_a == top_b && right_a == right_b && bottom_a == bottom_b)
-	{
-		return true;
-	}
-
+	
 	return false;
 }
 SDL_Rect GameLoop::GetFrameP( Player p)
@@ -310,10 +321,37 @@ void GameLoop::RenderOver()
 	gamemusic.stopMusic();
 	if (over)
 	{
-		oversound.playSound();
+		oversound.playSound();   
 		over = NULL;
 	}
 	SDL_RenderClear(renderer);
 	gameover.GroundRender(renderer);
+	fonttex = RenderText("Score: ", fontscore,white, score / 100);
+	TextRender(fonttex, 20, 20, renderer);
+	getHighscore();
+	fonttex2 = RenderText("High Score: ", fontscore, white, best);
+	TextRender(fonttex2,20, 50, renderer);
 	SDL_RenderPresent(renderer);
+	SDL_DestroyTexture(fonttex);
+	SDL_DestroyTexture(fonttex2);
+	
+
+
+}
+void GameLoop::getHighscore()
+{
+	if (score / 100 > best)
+	{
+		best = score / 100;
+	}
+	std::fstream file("score.txt");
+	file << best;
+	file.close();
+}
+
+void GameLoop::Highscore()
+{
+	std::fstream file("score.txt");
+	file >> best;
+	file.close();
 }

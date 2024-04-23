@@ -8,6 +8,7 @@
 #include<stdlib.h>
 #include <SDL_ttf.h>
 #include "Sound.h"
+#include <fstream>
 #include"TextManager.h"
 class GameLoop
 {
@@ -23,18 +24,28 @@ private:
 	const int WIDTH = 800;
 	bool GameState;
 	bool GameEnd;
-	SDL_Window* window;
+	SDL_Window* window = NULL;
 	SDL_Event event1;
-	SDL_Renderer* renderer;
+	SDL_Renderer* renderer=NULL;
 	int gamepause;
 	bool over = true;
+	TTF_Font* fontscore = NULL;
+	SDL_Texture* fonttex = NULL;
+	SDL_Texture* fonttex2 = NULL;
+	SDL_Color black = { 0, 0 , 0, 255 };
+	SDL_Color white = { 255, 255, 255 };
+	int score,best;
 public:
+	int getTime(int time);
+	TTF_Font* loadFont(const char* path, int size);
+	SDL_Texture* RenderText(const std::string& text, TTF_Font* font, SDL_Color color,int score);
+	void TextRender(SDL_Texture* texture, int x, int y, SDL_Renderer* renderer);
 	int pause();
 	bool checkgameover();
 	GameLoop();
 	bool getGameState();
 	void Update();
-	void Intialize();
+	void Initalize();
 	void Event();
 	void Render();
 	void RenderMenu();
@@ -44,4 +55,6 @@ public:
 	SDL_Rect GetFrameE(Enemy p);
 	void Check();
 	bool CheckCollision(const SDL_Rect& object1, const SDL_Rect& object2);
+	void Highscore();
+	void getHighscore();
 };

@@ -17,7 +17,7 @@ int main(int argc, char** argv)
 		bool start = false;
 		
 		GameLoop* g = new GameLoop();
-		g->Intialize();
+		g->Initalize();
 		bool gameinit = g->getGameState();
 		while (gameinit)
 		{
@@ -54,10 +54,10 @@ int main(int argc, char** argv)
 					y = event1.button.y;
 					if (x < 380 and x > 100 and y > 280 and y < 400)
 					{
-						
+
 						gameinit = false;
 						event1.button.button = NULL;
-						
+
 					}
 					else if (x < 720 and x > 440 and y > 280 and y < 400)
 					{
@@ -71,7 +71,7 @@ int main(int argc, char** argv)
 				SDL_Delay(16.7 - (first - last));
 			}
 			last = first;
-			if (!start )
+			if (!start)
 			{
 				SDL_PollEvent(&event);
 				if (event.button.button == SDL_BUTTON_LEFT)
@@ -90,7 +90,6 @@ int main(int argc, char** argv)
 				}
 
 			}
-
 		}
 		g->Clear();
 	}

@@ -1,86 +1,92 @@
 #include "TextManager.h"
 
-
 Text::Text()
 {
-	Tcolor.r = 255;
-	Tcolor.g = 255;
-	Tcolor.b = 255;
-	Ttex = NULL;
-
+	Textcolor.r = 255;
+	Textcolor.g = 255;
+	Textcolor.g = 255;
+	Texttex = NULL;
 }
+
 Text::~Text()
 {
-
 }
 
-bool Text::LoadFromRenderText(TTF_Font& font, SDL_Renderer* screen)
+bool Text::LoadFromFile(std::string path)
 {
-	SDL_Surface* Tsurf = TTF_RenderText_Solid(&font, val.c_str(), Tcolor);
-	if (Tsurf)
-	{
-		Ttex = SDL_CreateTextureFromSurface(screen, Tsurf);
-		Twidth = Tsurf->w;
-		Theight = Tsurf->h;
-
-		SDL_FreeSurface(Tsurf);
-	}
-	return Ttex != NULL;
+	return false;
 }
+
+bool Text::LoadFromRenderText(TTF_Font* font, SDL_Renderer* screen)
+{
+	SDL_Surface* textsurface = TTF_RenderText_Solid(font, val.c_str(), Textcolor);
+	if (textsurface)
+	{
+		Texttex = SDL_CreateTextureFromSurface(screen, textsurface);
+		Textwidth = textsurface->w;
+		Textheight = textsurface->h;
+		SDL_FreeSurface(textsurface);
+	}
+	return Texttex != NULL;
+}
+
 void Text::Free()
 {
-	if (Ttex != NULL)
+	if (Texttex != NULL)
 	{
-		SDL_DestroyTexture(Ttex);
-		Ttex = NULL; 
+		SDL_DestroyTexture(Texttex);
+		Texttex = NULL;
 	}
 }
 
 void Text::SetColor(Uint8 red, Uint8 green, Uint8 blue)
 {
-	Tcolor.r = red;
-	Tcolor.g = green;
-	Tcolor.b = blue;
+	Textcolor.r = red;
+	Textcolor.g = green;
+	Textcolor.b = blue;
 }
 
 void Text::SetColor(int type)
 {
 	if (type == RED_TEXT)
 	{
-		SDL_Color color = { 255, 0, 0 };
+		SDL_Color color = { 255,0,0 };
+		Textcolor = color;
 	}
 	else if (type == WHITE_TEXT)
 	{
-		SDL_Color color = { 255, 255, 255 };
+		SDL_Color color = { 255,255,255 };
+		Textcolor = color;
 	}
 	else if (type == BLACK_TEXT)
 	{
-		SDL_Color color = { 0, 0, 0 };
+		SDL_Color color = { 0,0,0 };
+		Textcolor = color;
 	}
 }
 
 void Text::RenderText(SDL_Renderer* screen, int xp, int yp, SDL_Rect* clip, double angle, SDL_Point* center, SDL_RendererFlip flip)
 {
-	SDL_Rect renderQuad = { xp , yp ,Twidth, Theight };
+	SDL_Rect renderQuad = { xp,yp,Textwidth,Textheight };
 	if (clip != NULL)
 	{
 		renderQuad.w = clip->w;
 		renderQuad.h = clip->h;
-	}
-	SDL_RenderCopyEx(screen, Ttex, clip, &renderQuad, angle, center, flip);
 
+	}
+	SDL_RenderCopyEx(screen, Texttex, clip, &renderQuad, angle, center, flip);
 }
 
-
-int Text::GetWidth()
+/*int Text::GetWidth()
 {
-	return Theight;
+	return Textwidth;
 }
 
 int Text::GetHeight()
 {
-	return Theight;
+	return Textheight;
 }
+*/
 void Text::SetText(const std::string& text)
 {
 	val = text;
@@ -88,5 +94,5 @@ void Text::SetText(const std::string& text)
 
 std::string Text::GetText()
 {
-	return std::string();
+	return val;
 }

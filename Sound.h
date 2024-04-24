@@ -18,6 +18,5 @@ public:
 	void playMusic(int loop = -1);
 	void playSound(int loop = -1);
 	void stopMusic();
-	void pauseMusic();
 
 };

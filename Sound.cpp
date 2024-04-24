@@ -66,9 +66,3 @@ void Music::stopMusic()
 {
 	if (music) Mix_HaltMusic();
 }
-
-void Music::pauseMusic()
-{
-	if (music) Mix_PausedMusic();
-}
-

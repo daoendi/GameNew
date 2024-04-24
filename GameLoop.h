@@ -36,7 +36,6 @@ private:
 	SDL_Color white = { 255, 255, 255 };
 	int score,best;
 public:
-	int getTime(int time);
 	TTF_Font* loadFont(const char* path, int size);
 	SDL_Texture* RenderText(const std::string& text, TTF_Font* font, SDL_Color color,int score);
 	void TextRender(SDL_Texture* texture, int x, int y, SDL_Renderer* renderer);
@@ -47,6 +46,8 @@ public:
 	void Update();
 	void Initalize();
 	void Event();
+	void MenuEvent(bool &start);
+	void OverEvent(bool &gameinit);
 	void Render();
 	void RenderMenu();
 	void RenderOver();
@@ -57,4 +58,5 @@ public:
 	bool CheckCollision(const SDL_Rect& object1, const SDL_Rect& object2);
 	void Highscore();
 	void getHighscore();
+	
 };

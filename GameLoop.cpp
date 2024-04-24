@@ -211,12 +211,12 @@ void GameLoop::Render()
 		else
 		{
 			pausebutton.GroundRender(renderer);
+			score += 1;
 		}
 		p.PlayerRender(renderer, gamepause);
 		mod1.EnemyRender(renderer);
 		mod2.EnemyRender(renderer);
 		mod3.EnemyRender(renderer);
-		score += 1;
 		fonttex = RenderText("Score: ", fontscore, black, score/100);
 		TextRender(fonttex, 20, 20, renderer);
 		getHighscore();
@@ -228,7 +228,7 @@ void GameLoop::Render()
 }
 void GameLoop::Clear()
 {
-	SDL_DestroyRenderer(renderer);
+	//SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 }
 bool GameLoop::CheckCollision(const SDL_Rect& rect1, const SDL_Rect& rect2) 
@@ -277,6 +277,48 @@ bool GameLoop::CheckCollision(const SDL_Rect& rect1, const SDL_Rect& rect2)
 	
 	return false;
 }
+void GameLoop::MenuEvent(bool &start)
+{
+	SDL_PollEvent(&event1);
+	int x = 0;
+	int y = 0;
+	if (event1.button.button == SDL_BUTTON_LEFT)
+	{
+		x = event1.button.x;
+		y = event1.button.y;
+		if (x < 600 and x > 320 and y > 220 and y < 340)
+		{
+			start = true;
+			event1.button.button = NULL;
+		}
+		else if (x < 600 and x > 320 and y > 365 and y < 485)
+		{
+			exit(0);
+		}
+	}
+}
+void GameLoop::OverEvent(bool &gameinit)
+{
+	SDL_PollEvent(&event1);
+	int x = 0;
+		int y = 0;
+	if (event1.button.button == SDL_BUTTON_LEFT)
+	{
+		x = event1.button.x;
+		y = event1.button.y;
+		if (x < 380 and x > 100 and y > 280 and y < 400)
+		{
+
+			gameinit = false;
+			event1.button.button = NULL;
+
+		}
+		else if (x < 720 and x > 440 and y > 280 and y < 400)
+		{
+			exit(0);
+		}
+	}
+}
 SDL_Rect GameLoop::GetFrameP( Player p)
 {
 	SDL_Rect rectF = {};
@@ -315,7 +357,8 @@ bool GameLoop::checkgameover()
 	return GameEnd;
 }
 void GameLoop::RenderOver()
-{if (Mix_OpenAudio(60000, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+{
+	if (Mix_OpenAudio(60000, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
 			Mix_GetError();
 	}
 	gamemusic.stopMusic();
@@ -348,7 +391,6 @@ void GameLoop::getHighscore()
 	file << best;
 	file.close();
 }
-
 void GameLoop::Highscore()
 {
 	std::fstream file("score.txt");

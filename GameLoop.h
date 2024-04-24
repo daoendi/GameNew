@@ -13,7 +13,7 @@
 class GameLoop
 {
 private:
-	Music gamemusic,jumpsound,oversound;
+	Music gamemusic,jumpsound,oversound,gamemusic1;
 	Player p;
 	Background b,b1,b2;
 	Background ground1, ground2;
@@ -22,7 +22,6 @@ private:
 	Enemy mod1,mod2,mod3;
 	const int HEIGHT = 520;
 	const int WIDTH = 800;
-	bool GameState;
 	bool GameEnd;
 	SDL_Window* window = NULL;
 	SDL_Event event1;
@@ -42,7 +41,6 @@ public:
 	int pause();
 	bool checkgameover();
 	GameLoop();
-	bool getGameState();
 	void Update();
 	void Initalize();
 	void Event();

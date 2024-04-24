@@ -5,7 +5,6 @@
 
 GameLoop::GameLoop()
 {
-	GameState = false;
 	gamepause = 0;
 	score = 0;
 	Highscore();
@@ -26,10 +25,6 @@ GameLoop::GameLoop()
 	gameover.setSrc(0, 0, 520, 800);
 	gameover.setDest(0, 0, 520, 800);
 }
-bool GameLoop::getGameState()
-{
-	return GameState;
-} 
 int GameLoop::pause()
 {
 	return gamepause;
@@ -75,6 +70,7 @@ void GameLoop::Initalize()
 {	
 
 	SDL_Init(SDL_INIT_EVERYTHING);
+	TTF_Init();
 	window = SDL_CreateWindow("Dino_Endi", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, 0);
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
 			Mix_GetError();
@@ -84,11 +80,9 @@ void GameLoop::Initalize()
 		renderer = SDL_CreateRenderer(window, -1, 0);
 		if (renderer)
 		{
-			TTF_Init();
-			GameState = true;
 			fontscore = loadFont("Font/eurof55.ttf", 40);
-			//fonttex = RenderText("Score: ", fontscore, color);
-			gamemusic.loadMusic("Sound/bkgr_audio.wav");
+			gamemusic.loadMusic("Sound/bkgr_audio2.ogg");
+			gamemusic1.loadMusic("Sound/bkgr_audio.wav");
 			jumpsound.loadSound("Sound/jump_sound.wav");
 			oversound.loadSound("Sound/lose_sound.wav"); 
 			bstart.CreateTexture("Image/menu.png", renderer);
@@ -116,7 +110,7 @@ void GameLoop::Initalize()
 	{
 		std::cout << "window not created!" << std::endl;
 	}
-	gamemusic.playMusic();
+	gamemusic1.playMusic();
 }
 void GameLoop::Event()
 {
@@ -156,15 +150,18 @@ void GameLoop::Event()
 			{
 					gamepause++;
 			}
-			if (!p.JumpState())
+			else
 			{
+				if (!p.JumpState())
+				{
 					p.Jump();
 					std::cout << " pes";
 					jumpsound.playSound();
-			}
-			else
-			{
-				p.Gravity();
+				}
+				else
+				{
+					p.Gravity();
+				}
 			}
 		}
 		if (event1.key.keysym.sym == SDLK_c)
@@ -175,7 +172,10 @@ void GameLoop::Event()
 	}
 	else
 	{
-		p.Gravity();
+		if (gamepause % 2 == 0)
+		{
+			p.Gravity();
+		}
 	}
 }
 void GameLoop::Update()
@@ -228,7 +228,7 @@ void GameLoop::Render()
 }
 void GameLoop::Clear()
 {
-	//SDL_DestroyRenderer(renderer);
+	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 }
 bool GameLoop::CheckCollision(const SDL_Rect& rect1, const SDL_Rect& rect2) 
@@ -289,12 +289,18 @@ void GameLoop::MenuEvent(bool &start)
 		if (x < 600 and x > 320 and y > 220 and y < 340)
 		{
 			start = true;
+			gamemusic1.stopMusic();
+			gamemusic.playMusic();
 			event1.button.button = NULL;
 		}
 		else if (x < 600 and x > 320 and y > 365 and y < 485)
 		{
 			exit(0);
 		}
+	}
+	if (event1.type == SDL_QUIT)
+	{
+		exit(0);
 	}
 }
 void GameLoop::OverEvent(bool &gameinit)
@@ -317,6 +323,10 @@ void GameLoop::OverEvent(bool &gameinit)
 		{
 			exit(0);
 		}
+	}
+	if (event1.type == SDL_QUIT)
+	{
+		exit(0);
 	}
 }
 SDL_Rect GameLoop::GetFrameP( Player p)

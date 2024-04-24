@@ -54,7 +54,6 @@ void Player::PlayerRender(SDL_Renderer* ren, int a)
 
 void Player::Gravity()
 {
-
 	if (JumpState())
 	{
 		SpeedUp = SpeedUp + gravity;

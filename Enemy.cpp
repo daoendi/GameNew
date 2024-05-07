@@ -56,4 +56,22 @@ void Enemy::EnemyUpdate3()
 	}
 }
 
+void Enemy::EnemyUpdate4()
+{
+
+	accelerator++;
+	if (distance4 <= -400)
+	{
+		distance4 = 2000;
+	}
+	else
+	{
+		distance4 -= (3 + accelerator / 2000);
+		setSrc(0, 0, 108, 108);
+		setDest(distance4, 178, 100, 100);
+	}
+
+
+}
+
 

@@ -19,7 +19,7 @@ private:
 	Background ground1, ground2;
 	Background bstart, bpause;
 	Background gameover,pausebutton;
-	Enemy mod1,mod2,mod3;
+	Enemy mod1,mod2,mod3,mod4;
 	const int HEIGHT = 520;
 	const int WIDTH = 800;
 	bool GameEnd;
@@ -50,8 +50,8 @@ public:
 	void RenderMenu();
 	void RenderOver();
 	void Clear();   
-	SDL_Rect GetFrameP(Player p);
-	SDL_Rect GetFrameE(Enemy p);
+	SDL_Rect GetFrameP(Player p,int a);
+	SDL_Rect GetFrameE(Enemy p,int a);
 	void Check();
 	bool CheckCollision(const SDL_Rect& object1, const SDL_Rect& object2);
 	void Highscore();

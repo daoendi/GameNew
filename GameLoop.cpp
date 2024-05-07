@@ -80,6 +80,7 @@ void GameLoop::Initalize()
 		renderer = SDL_CreateRenderer(window, -1, 0);
 		if (renderer)
 		{
+			mod4.CreateTexture("Image/bat.png", renderer);
 			fontscore = loadFont("Font/eurof55.ttf", 40);
 			gamemusic.loadMusic("Sound/bkgr_audio2.ogg");
 			gamemusic1.loadMusic("Sound/bkgr_audio.wav");
@@ -188,6 +189,7 @@ void GameLoop::Update()
 	mod1.EnemyUpdate1();
 	mod2.EnemyUpdate2();
 	mod3.EnemyUpdate3();
+	mod4.EnemyUpdate4();
 	
 }
 void GameLoop::RenderMenu()
@@ -213,10 +215,12 @@ void GameLoop::Render()
 			pausebutton.GroundRender(renderer);
 			score += 1;
 		}
+		
 		p.PlayerRender(renderer, gamepause);
 		mod1.EnemyRender(renderer);
 		mod2.EnemyRender(renderer);
 		mod3.EnemyRender(renderer);
+		mod4.EnemyRender(renderer);
 		fonttex = RenderText("Score: ", fontscore, black, score/100);
 		TextRender(fonttex, 20, 20, renderer);
 		getHighscore();
@@ -329,23 +333,23 @@ void GameLoop::OverEvent(bool &gameinit)
 		exit(0);
 	}
 }
-SDL_Rect GameLoop::GetFrameP( Player p)
+SDL_Rect GameLoop::GetFrameP( Player p, int a)
 {
 	SDL_Rect rectF = {};
 	SDL_Rect scra = p.getDest();
 	rectF.x = scra.x;
 	rectF.y = scra.y;
-	rectF.w = scra.w / 8;
+	rectF.w = scra.w / a;
 	rectF.h = scra.h;
 	return rectF;
 }
-SDL_Rect GameLoop::GetFrameE( Enemy e)
+SDL_Rect GameLoop::GetFrameE( Enemy e, int a)
 {
 	SDL_Rect rectE = {};
 	SDL_Rect scra = e.getDest();
 	rectE.x = scra.x;
 	rectE.y = scra.y;
-	rectE.w = scra.w / 8;
+	rectE.w = scra.w / a;
 	rectE.h = scra.h;
 	return rectE;
 
@@ -353,11 +357,13 @@ SDL_Rect GameLoop::GetFrameE( Enemy e)
 void GameLoop::Check()
 {
 	GameEnd = false;
-	SDL_Rect cplayer = GameLoop::GetFrameP(p);
-	SDL_Rect Fenemy1 = GameLoop::GetFrameE(mod1);
-	SDL_Rect Fenemy2 = GameLoop::GetFrameE(mod2);
-	SDL_Rect Fenemy3 = GameLoop::GetFrameE(mod3);
-	if(CheckCollision(cplayer,Fenemy1)|| CheckCollision(cplayer, Fenemy2) || CheckCollision(cplayer, Fenemy3))
+	SDL_Rect cplayer = GameLoop::GetFrameP(p,3);
+	SDL_Rect Fenemy1 = GameLoop::GetFrameE(mod1,5);
+	SDL_Rect Fenemy2 = GameLoop::GetFrameE(mod2,5);
+	SDL_Rect Fenemy3 = GameLoop::GetFrameE(mod3,5);
+	SDL_Rect Fenemy4 = GameLoop::GetFrameE(mod4,2);
+
+	if(CheckCollision(cplayer,Fenemy1)|| CheckCollision(cplayer, Fenemy2) || CheckCollision(cplayer, Fenemy3) || CheckCollision(cplayer,Fenemy4))
 	{
 		GameEnd = true;
 	}
